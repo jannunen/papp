@@ -29,9 +29,8 @@ var mainView = myApp.addView('.view-main', {
 
 
 document.addEventListener("deviceready", function(){
-    console.log("Device is ready!");
-    alert("niin ready");
-    console.log("After alert");
+    console.log("Device is ready... :)");
+    addLoginPageListeners();
          },true);
 
 

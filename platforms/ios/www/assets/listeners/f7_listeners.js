@@ -109,10 +109,11 @@ var addDashBoardListeners = function(pagename) {
   } // if pagename
 }
 var addLoginPageListeners = function() {
+  alert("lpl");
   if (Cookies.get("loginok")) {
     myApp.closeModal(".login-screen");
     myApp.showPreloader('Hang on, initializing app.');
-    indexController.initializeIndexPage();
+    // indexController.initializeIndexPage();
   }
   $$('.loginbutton').on('click', function (e) {
     if ($("#problematorlocation").val()=="") {
@@ -134,7 +135,8 @@ var addLoginPageListeners = function() {
           // Initialize index page.
           myApp.closeModal();
           myApp.showPreloader('Hang on, initializing app.');
-          indexController.initializeIndexPage();
+          alert("joo");
+          //indexController.initializeIndexPage();
         } else {
           myApp.alert(back);
         }

@@ -28,13 +28,12 @@ var mainView = myApp.addView('.view-main', {
 });
 
 
-// Handle Cordova Device Ready Event
-$$(document).on('deviceready', function() {
+document.addEventListener("deviceready", function(){
     console.log("Device is ready!");
-
     alert("niin ready");
     console.log("After alert");
-});
+         },true);
+
 
 
 

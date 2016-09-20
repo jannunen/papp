@@ -15,7 +15,6 @@ Template7.registerHelper('stringify', function (context){
 // Initialize your app
 var myApp = new Framework7({
 	preprocess: function (content, url, next) {
-		debugger;
 		var matches = null;
 		if (url == null) {
 			if (next != null) {
@@ -39,7 +38,6 @@ var myApp = new Framework7({
 		} else if ((matches=url.match(/dashboard.html/))) {
 			$.jsonp(window.api.apicallbase+"dashinfo/?id="+Cookies.get("uid"),{},function(data) {
 				loginCheck(data);
-				debugger;
 				$.jStorage.set("grades",data.grades);
 				var compiledTemplate = Template7.compile(content);
 				var html = compiledTemplate(data);
@@ -80,7 +78,6 @@ var myApp = new Framework7({
 			var pid = matches[1];
 			var url = window.api.apicallbase + "problem";
 			$.jsonp(url, {id : pid}, function (data){ 
-				debugger;
 				var compiledTemplate = Template7.compile(content);
 				data.grades = $.jStorage.get("grades");
 				var html = compiledTemplate(data);
@@ -121,7 +118,6 @@ myApp.onPageInit("*",function(page) {
      addGroupPageListeners(pagename);
      addProblemsPageListeners(pagename);
      */
-  debugger;
   addDashBoardListeners(pagename);
   addIndexPageListeners(pagename,page);
 

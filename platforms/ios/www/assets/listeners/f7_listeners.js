@@ -57,7 +57,6 @@ var addDashBoardListeners = function(pagename) {
         });
       });
       var url = window.api.apicallbase+"json_running6mo_both/";
-      debugger;
       $.jsonp(url,{uid : window.uid},function(_data) {
 
         dashboardLineChart = Morris.Line({
@@ -118,7 +117,6 @@ var addLoginPageListeners = function() {
   if (Cookies.get("loginok")) {
     myApp.closeModal(".login-screen");
     myApp.showPreloader('Hang on, initializing app.');
-    debugger;
     var uid = Cookies.get("uid");
     $("#userid").val(uid);
     window.uid = uid;
@@ -158,7 +156,6 @@ var addLoginPageListeners = function() {
 var addIndexPageListeners = function(pagename,page) {
   if ("index"==pagename) {
     $$(".btn_logout").on("click",function() {
-      debugger;
       Cookies.remove("loginok");
       Cookies.remove("uid");
       window.uid = null;

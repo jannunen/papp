@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+
+    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' data: 'unsafe-inline' 'unsafe-eval' * ; object-src *; style-src 'unsafe-inline' data: *; img-src 'self' data: *; media-src *; frame-src *; font-src *; connect-src *"/>
+    <meta http-equiv="X-Content-Security-Policy" content="default-src *; script-src *; object-src *; style-src *; img-src *; media-src *; frame-src *; font-src *; connect-src *"/>
+    <meta http-equiv="X-WebKit-CSP" content="default-src *; script-src *; object-src *; style-src *; img-src *; media-src *; frame-src *; font-src *; connect-src *"/>
+
+    <title>Problemator</title>
+
+		<link rel="stylesheet" href="lib/framework7/css/framework7.ios.min.css">
+		<link rel="stylesheet" href="lib/framework7/css/framework7.ios.colors.min.css">
+
+		<!-- Using font-awesome library for icons -->
+		<link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/style.css?ver=" />
+</head>
+
+<body>
+	<body class="layout-dark">
+		<!-- Status bar overlay for iOS7 issue - see my-app.css for background color setting and config.xml -->
+		<div class="statusbar-overlay"></div>
+    <input type="hidden" id="userid" name="userid" value="" />
+
+		<!-- Panels overlay - used for side menu and any other panels to slide out from either side-->
+		<div class="panel-overlay"></div>
+
+		<!-- Left panel menu with reveal effect (could also use a panel-cover effect)-->
+		<div class="panel panel-left panel-reveal">
+			<div class="list-block">
+        <!-- sidebar starts -->
+        <nav id="sidebarnav" class="list-nav">
+          <div class="row">
+            <div class="col-100 text-center">
+              <img src="/assets/images/Problemator_logo_big_grey.svg" />
+            </div>
+          </div>
+          <ul>
+            <li><span class="fa fa-home fa-1x"></span><a class="close-panel external" href="/t/problematormobile/index/">Home</a></li>
+            <li><span  class="fa fa-list-ul fa-1x"></span><a href="/static/problems.html"  class="close-panel" >Problems</a></li>
+            <li><span  class="fa fa-newspaper-o fa-1x"></span><a href="#new-problems-page"  class="close-panel" >New problems</a></li>
+            <li><span  class="fa fa-info fa-1x"></span><a href="#faq"  class="close-panel" >FAQ</a> </li>
+            <li><span  class="fa fa-check-square-o fa-1x"></span><a href="#tickstoday"  class="close-panel" >Ticks today</a> </li>
+            <li><span  class="fa fa-calendar fa-1x"></span><a href="/t/problematormobile/_tickarchivepage/"  class="close-panel" >Tick archive</a></li>
+            <li><span class="fa fa-signal fa-1x "></span><a href="/t/problematormobile/_ranking/" class="close-panel" >Ranking</a></li>
+            <li ><span   class="fa fa-users fa-1x"></span><a href="/t/problematormobile/groups/index/"  class="close-panel ">My groups</a></li>
+            <li ><span   class="fa fa-info fa-1x"></span><a href="#gyminfo"  class="close-panel ">Gym info</a></li>
+            <li ><span   class="fa fa-info fa-1x"></span><a href="#gyminfo"  class="close-panel ">Change gym</a></li>
+            <li><span class=" fa fa-cogs fa-1x"></span><a href="#settings"  class="close-panel">Settings</a></li>
+            <li class=""><span class="fa fa-question fa-1x"></span><a href="#about" class="close-panel">About</a></li>
+
+            <li ><span   class="fa fa-sign-out fa-1x"></span><a href="#"  class="external close-panel btn_logout">Logout</a></li>
+            <li><br /><br /></li>
+          </ul>
+        </nav>  
+        <!-- // sidebar -->
+			</div>
+		</div>
+
+		<!-- Views-->
+		<div class="views">
+			<!-- Main view-->
+			<div class="view view-main">
+				<!-- Top Navigation Bar-->
+				<div class="navbar" >
+					<div class="navbar-inner">
+						<!-- Home navbar -->
+					<div class="left ">
+						<a class="external" href="https://www.problemator.fi/t/problematormobile/index/"><img src="/assets/images/problemator_logo_small.svg" alt="logo" /></a>
+					</div>
+					<div class="center sliding">Problemator</div>
+					<div class="right">
+						<a href="#" class="link icon-only open-panel"> <i class="fa fa-bars"></i></a>
+					</div>
+					</div>
+				</div>
+
+				<!-- Pages - Fixed navbar and toolbar throughout all pages in this view stack-->
+				<div class="pages navbar-through toolbar-through">
+					<!-- Page, data-page contains page name-->
+					<div data-page="index" class="page">
+						<!-- Scrollable page content-->
+						<div class="page-content">
+							<!-- this is actually dashboard.html -->
+							Loading...
+						</div>
+					</div>
+				</div>
+
+				<!-- Bottom Toolbar on every view unless no-toolbar specified -->
+				<div class="toolbar">
+					<div class="toolbar-inner">
+						<a href="http://www.idangero.us/framework7" class="link external">Powered by Framework7</a>
+						<a href="#" class="link"></a> <!-- placeholder -->
+						<a href="http://www.idangero.us/framework7" class="link external">
+							<i class="icon icon-f7"></i>
+						</a>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--------------------------->
+		<!--   TEMPLATES SECTION  --->
+		<!--------------------------->
+		<div class="login-screen modal-in">
+			<div class="view view-main">
+				<div class="page">
+					<div class="page-content login-screen-content">
+						<form id="check-user"  class="ajax-submit"  method="post" action="">
+							<div class="list-block">
+								<div class="content-block-title text-center"><img src="assets/images/Problemator_logo_big_yellow.svg" /></div>
+								<div class="login-screen-title"><h2>Problemator</h2></div>
+								<div class="content-block-title text-center body-text-w text-center">Climbing is dangerous.<br />You may also get addicted to it!</div>
+								<ul>
+									<li class="item-content">
+										<div class="item-inner">
+											<div class="item-input">
+												<input type="text" name="username" placeholder="Your e-mail" value=""  />
+											</div>
+										</div>
+									</li>
+									<li class="item-content">
+										<div class="item-inner">
+											<div class="item-input">
+												<input type="password" name="password" id="password" placeholder="Your password" value="" />
+											</div>
+										</div>
+									</li>
+									<li class="item-content">
+										<div class="item-inner">
+											<div class="item-input">
+												<select name="problematorlocation" id="problematorlocation" >
+													<option value=""> Choose a gym</option>
+													<option value="1">Pasila</option>
+												</select>
+												<input type="hidden" name="authenticate" value="true" />
+											</div>
+										</div>
+									</li>
+								</ul>
+							</div>
+
+							<div class="list-block">
+								<div class="list-block-label">
+									<div class="row">
+										<div class="col-100 text-g">By registering/logging in you accept the <a href="https://www.problemator.fi/tos.html" class="external text-y">Terms of Use</a></div>
+									</div>
+								</div>
+							</div>
+							<div class="list-block">
+								<div class="list-block-label">
+									<div class="row">
+										<div class="col-50 text-left">
+											<button type="button" class="loginbutton button color-problematoryellow body-text-w">Log in</button>
+										</div>
+										<div class="col-50 text-center vcenter pad20">
+											<span class="text-g">or</span> <a class="problemator-link external" href="https://www.problemator.fi/t/problematormobile/signup/">Sign up</a>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-100 text-left padtop"><a href="https://www.problemator.fi/t/problematormobile/forgotpassword/" class="external text-w ">Forgot password?</a></div>
+									</div>
+									<div class="row">
+										<div class="col-100 text-left padtop">
+											<a href="#" id="facebook-login" class="external text-w"><span class="fa fa-facebook-official"></span> Log in with Facebook</a>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div><!-- end of login screen -->
+
+
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="lib/framework7/js/framework7.min.js"></script>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="assets/listeners/f7_listeners.js?ver="></script>
+    <script type="text/javascript" src="assets/problemator_mobile.js"></script>
+    <script type="text/javascript" src="bower_components/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="assets/helpers/template7_helpers.js?ver="></script>
+    <script type="text/javascript" src="bower_components/js-cookie/src/js.cookie.js"></script>
+    <script type="text/javascript" src="bower_components/jStorage/jstorage.min.js"></script>
+    <script type="text/javascript" src="bower_components/raphael/raphael.min.js"></script> 
+    <script type="text/javascript" src="bower_components/morris.js/morris.min.js"></script>
+    <script type="text/javascript" src="assets/js/funcs.js"></script>
+    <script type="text/javascript" src="config.js"></script>
+		<script type="text/javascript" src="my-app.js"></script>
+	</body>
+
+</html>

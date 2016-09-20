@@ -1,0 +1,39 @@
+{
+	"name": "jquery-scrollto",
+	"version": "1.4.4",
+	"description": "Smooth Scrolling to any jQuery/DOM Element",
+	"homepage": "https://github.com/balupton/jquery-scrollto",
+	"keywords": [
+		"jquery","scroll","scrolling","scrollto","smooth","dom"
+	],
+	"author": "Bevry Pty Ltd <us@bevry.me> (http://bevry.me)",
+	"maintainers": [
+		"Benjamin Lupton <b@lupton.cc> (https://github.com/balupton)"
+	],
+	"contributors": [
+		"Benjamin Lupton <b@lupton.cc> (https://github.com/balupton)"
+	],
+	"bugs": {
+		"url": "https://github.com/balupton/jquery-scrollto/issues"
+	},
+	"repository" : {
+		"type": "git",
+		"url": "https://github.com/balupton/jquery-scrollto.git"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"docpad": "6.x",
+		"docpad-plugin-eco": "2.x",
+		"docpad-plugin-highlightjs": "2.x",
+		"docpad-plugin-livereload": "2.x",
+		"docpad-plugin-ghpages": "2.x",
+		"docpad-plugin-cleanurls": "2.x"
+	},
+	"directories": {
+		"lib": "./out/lib"
+	},
+	"scripts": {
+		"test": "./node_modules/.bin/cake test"
+	},
+	"main": "./out/lib/jquery-scrollto.js"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "jquery-scrollto",
+  "homepage": "https://github.com/balupton/jquery-scrollto",
+  "version": "1.4.4",
+  "_release": "1.4.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "v1.4.4",
+    "commit": "07e77b71368836f35c3f39e818c87b83cf5a187f"
+  },
+  "_source": "https://github.com/balupton/jquery-scrollto.git",
+  "_target": "^1.4.4",
+  "_originalSource": "jquery-scrollto"
+}

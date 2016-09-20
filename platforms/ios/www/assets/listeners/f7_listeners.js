@@ -10,6 +10,7 @@ var indexController= {
 }
 var addDashBoardListeners = function(pagename) {
   if ("dash"==pagename) {
+    
     myApp.hidePreloader();
     if (Cookies.get("whatsnew"+ver)==undefined) {
       Cookies.set("whatsnew"+ver,true,{ expires: 7650 });
@@ -29,7 +30,7 @@ var addDashBoardListeners = function(pagename) {
 
 
       var url = window.api.apicallbase + "globalrankingprogress?jsonp=true";
-      $.jsonp(url,{},function(_data) {
+      $.jsonp(url,{uid:window.uid},function(_data) {
         dashboardLineChart = Morris.Line({
           element: 'ranking_progress',
           data: _data,
@@ -39,6 +40,9 @@ var addDashBoardListeners = function(pagename) {
           lineColors : ['#decc00','#bfb6a8'],
           lineWidth : "2px",
           smooth : true,
+          yLabelFormat : function(y) {
+            return -y;
+          },
 
           xLabelFormat : function(x) {
             var objDate = new Date(x);
@@ -53,7 +57,8 @@ var addDashBoardListeners = function(pagename) {
         });
       });
       var url = window.api.apicallbase+"json_running6mo_both/";
-      $.jsonp(url,{userid : window.uid},function(_data) {
+      debugger;
+      $.jsonp(url,{uid : window.uid},function(_data) {
 
         dashboardLineChart = Morris.Line({
           element: 'running6mo',
@@ -89,7 +94,7 @@ var addDashBoardListeners = function(pagename) {
 
       var barurl = window.api.apicallbase+"json_running6mogradebars_both/";
       if ($("#running6mobars").length) {
-        $.jsonp(barurl,{},function(back) {
+        $.jsonp(barurl,{uid : window.uid},function(back) {
           dashboardBarChart = Morris.Bar({
             element : 'running6mobars',
             data : back,
@@ -113,7 +118,11 @@ var addLoginPageListeners = function() {
   if (Cookies.get("loginok")) {
     myApp.closeModal(".login-screen");
     myApp.showPreloader('Hang on, initializing app.');
-    // indexController.initializeIndexPage();
+    debugger;
+    var uid = Cookies.get("uid");
+    $("#userid").val(uid);
+    window.uid = uid;
+    indexController.initializeIndexPage();
   }
   $$('.loginbutton').on('click', function (e) {
     if ($("#problematorlocation").val()=="") {
@@ -135,8 +144,7 @@ var addLoginPageListeners = function() {
           // Initialize index page.
           myApp.closeModal();
           myApp.showPreloader('Hang on, initializing app.');
-          alert("joo");
-          //indexController.initializeIndexPage();
+          indexController.initializeIndexPage();
         } else {
           myApp.alert(back);
         }

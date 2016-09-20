@@ -5,11 +5,11 @@
     <meta name="format-detection" content="telephone=no" />
     <meta name="msapplication-tap-highlight" content="no" />
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
-    <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
-    <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' data: 'unsafe-inline' 'unsafe-eval' * ; object-src *; style-src 'unsafe-inline' data: *; img-src 'self' data: *; media-src *; frame-src *; font-src *; connect-src *"/>
-    <meta http-equiv="X-Content-Security-Policy" content="default-src *; script-src *; object-src *; style-src *; img-src *; media-src *; frame-src *; font-src *; connect-src *"/>
-    <meta http-equiv="X-WebKit-CSP" content="default-src *; script-src *; object-src *; style-src *; img-src *; media-src *; frame-src *; font-src *; connect-src *"/>
+
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; script-src * 'unsafe-eval'; style-src 'self'; media-src *; frame-src *;  img-src * data: *;">
 
     <title>Problemator</title>
 
@@ -183,19 +183,8 @@
 
 
 		<script type="text/javascript" src="cordova.js"></script>
-		<script type="text/javascript" src="lib/framework7/js/framework7.min.js"></script>
     <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="assets/listeners/f7_listeners.js?ver="></script>
-    <script type="text/javascript" src="assets/problemator_mobile.js"></script>
-    <script type="text/javascript" src="bower_components/moment/min/moment.min.js"></script>
-    <script type="text/javascript" src="assets/helpers/template7_helpers.js?ver="></script>
-    <script type="text/javascript" src="bower_components/js-cookie/src/js.cookie.js"></script>
-    <script type="text/javascript" src="bower_components/jStorage/jstorage.min.js"></script>
-    <script type="text/javascript" src="bower_components/raphael/raphael.min.js"></script> 
-    <script type="text/javascript" src="bower_components/morris.js/morris.min.js"></script>
-    <script type="text/javascript" src="assets/js/funcs.js"></script>
-    <script type="text/javascript" src="config.js"></script>
-		<script type="text/javascript" src="my-app.js"></script>
+    <script type="text/javascript" src="test.js"></script>
 	</body>
 
 </html>

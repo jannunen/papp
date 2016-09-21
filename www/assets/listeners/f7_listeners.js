@@ -10,7 +10,7 @@ var indexController= {
 }
 var addDashBoardListeners = function(pagename) {
   if ("dash"==pagename) {
-    
+    debugger;
     myApp.hidePreloader();
     if (Cookies.get("whatsnew"+ver)==undefined) {
       Cookies.set("whatsnew"+ver,true,{ expires: 7650 });
@@ -112,16 +112,7 @@ var addDashBoardListeners = function(pagename) {
     }
   } // if pagename
 }
-var addLoginPageListeners = function() {
-  alert("lpl");
-  if (Cookies.get("loginok")) {
-    myApp.closeModal(".login-screen");
-    myApp.showPreloader('Hang on, initializing app.');
-    var uid = Cookies.get("uid");
-    $("#userid").val(uid);
-    window.uid = uid;
-    indexController.initializeIndexPage();
-  }
+var addLoginPageListeners = function(pagename) {
   $$('.loginbutton').on('click', function (e) {
     if ($("#problematorlocation").val()=="") {
       myApp.alert("Please select a gym","Gym not selected");
@@ -154,30 +145,34 @@ var addLoginPageListeners = function() {
 
 }
 var addIndexPageListeners = function(pagename,page) {
-  if ("index"==pagename) {
-    $$(".btn_logout").on("click",function() {
-      Cookies.remove("loginok");
-      Cookies.remove("uid");
-      window.uid = null;
-      $("#userid").val("");
-      myApp.loginScreen();
-      myApp.closePanel();
+    if ("index"==pagename) {
+    debugger;
+      $$(".btn_logout").on("click",function() {
+        debugger;
+        Cookies.remove("loginok");
+        Cookies.remove("uid");
+        window.uid = null;
+        $("#userid").val("");
+        myApp.loginScreen();
+        myApp.closePanel();
 
-    });
-    // Confirm terminate account
-    $$(".opt-out").on("click",function() {
-      myApp.confirm("This action cannot be undone! All your data will be lost.","Are you sure?",function() {
-        var url = window.api.apicallbase + "terminate_account";
-        $.get(url).done(function(back) {
-          myApp.alert(back);
-          setTimeout(function() {
-            document.location.href="/index.html";
-          },5000);
+      });
+      // Confirm terminate account
+      $$(".opt-out").on("click",function() {
+        myApp.confirm("This action cannot be undone! All your data will be lost.","Are you sure?",function() {
+          var url = window.api.apicallbase + "terminate_account";
+          $.get(url).done(function(back) {
+            myApp.alert(back);
+            setTimeout(function() {
+              document.location.href="/index.html";
+            },5000);
+          });
         });
       });
-    });
-  }
+    }
+
 }
+
 var   addProblemsPageListeners = function(pagename) {
   if ("problems-page"==pagename) {
 

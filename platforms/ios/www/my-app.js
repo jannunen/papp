@@ -5,7 +5,7 @@ var pieSport = null;
 var pieBoulder = null;
 var data_opinions = []; // For problem page Morris chart.
 var tickSaved = false;
-
+var initialized = false;
 Template7.registerHelper('stringify', function (context){
     var str = JSON.stringify(context);
     // Need to replace any single quotes in the data with the HTML char to avoid string being cut short
@@ -14,6 +14,7 @@ Template7.registerHelper('stringify', function (context){
 
 // Initialize your app
 var myApp = new Framework7({
+  init : false,
 	preprocess: function (content, url, next) {
 		var matches = null;
 		if (url == null) {
@@ -97,8 +98,11 @@ var myApp = new Framework7({
 	},
     precompileTemplates: true,
 		template7Pages: true, // need to set this
-		modalTitle: "Problemator"
+		modalTitle: "Problemator",
+    pushState : true,
 })
+
+
 
 // Export selectors engine (jQuery ish )
 var $$ = Dom7;
@@ -108,6 +112,27 @@ var mainView = myApp.addView('.view-main', {
 	dynamicNavbar: true
 });
 
+$$(document).on('pageInit', function (e) {
+  // Check if login ok and go for dashboard init if is.
+  //
+  if (!initialized) {
+    addIndexPageListeners("index");
+    debugger;
+    if (Cookies.get("loginok")) {
+      myApp.closeModal(".login-screen");
+      //myApp.showPreloader('Hang on, initializing app.');
+      var uid = Cookies.get("uid");
+      $("#userid").val(uid);
+      window.uid = uid;
+      indexController.initializeIndexPage();
+    } else {
+      addLoginPageListeners();
+      myApp.loginScreen();
+    }
+    initialized = true;
+  } 
+});
+myApp.init(); // init app manually after you've attached all handlers
 myApp.onPageInit("*",function(page) {
   var pagename = page.name;
   var matches = null;
@@ -118,6 +143,8 @@ myApp.onPageInit("*",function(page) {
      addGroupPageListeners(pagename);
      addProblemsPageListeners(pagename);
      */
+    console.log("Initi: "+pagename);
+    //addLoginPageListeners(pagename);
   addDashBoardListeners(pagename);
   addIndexPageListeners(pagename,page);
 
@@ -126,8 +153,6 @@ myApp.onPageInit("*",function(page) {
 
 document.addEventListener("deviceready", function(){
     console.log("Device is ready... :)");
-
-    addLoginPageListeners();
          },true);
 
 

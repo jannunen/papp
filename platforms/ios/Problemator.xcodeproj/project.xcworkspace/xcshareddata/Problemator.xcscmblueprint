@@ -1,30 +1,35 @@
 {
-  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "B6CA4543CDD09C5290F6D7E273C26C4ADA14833E",
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "26d45e56-c711-47b3-ad1a-b6f5107bbaf3++5523+++7B13324",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
-    "B6CA4543CDD09C5290F6D7E273C26C4ADA14833E" : {
+    "B6CA4543CDD09C5290F6D7E273C26C4ADA14833E+++A09B870" : {
+
+    },
+    "26d45e56-c711-47b3-ad1a-b6f5107bbaf3++5523+++7B13324" : {
 
     }
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
-    "B6CA4543CDD09C5290F6D7E273C26C4ADA14833E" : 9223372036854775807
+    "B6CA4543CDD09C5290F6D7E273C26C4ADA14833E+++A09B870" : 9223372036854775807,
+    "26d45e56-c711-47b3-ad1a-b6f5107bbaf3++5523+++7B13324" : 9223372036854775807
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "C0C0FA85-0AEE-4C30-8CB7-C36D3EBEBDCF",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "B6CA4543CDD09C5290F6D7E273C26C4ADA14833E" : "ProblematorApp\/"
+    "B6CA4543CDD09C5290F6D7E273C26C4ADA14833E+++A09B870" : "ProblematorApp\/",
+    "26d45e56-c711-47b3-ad1a-b6f5107bbaf3++5523+++7B13324" : "ProblematorApp\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "Problemator",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
   "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "platforms\/ios\/Problemator.xcodeproj",
   "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
     {
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "svn+ssh:\/\/svn.boulderkeskus.com\/var\/svn\/repos",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B6CA4543CDD09C5290F6D7E273C26C4ADA14833E"
-    },
-    {
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/jannunen\/papp.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
-      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B6CA4543CDD09C5290F6D7E273C26C4ADA14833E"
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "26d45e56-c711-47b3-ad1a-b6f5107bbaf3++5523+++7B13324"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "svn+ssh:\/\/svn.boulderkeskus.com\/var\/svn\/repos",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B6CA4543CDD09C5290F6D7E273C26C4ADA14833E+++A09B870"
     }
   ]
 }

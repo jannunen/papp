@@ -106,9 +106,88 @@
   </div><!-- // views -->
 
 
+
+  <!--------------------------->
+  <!--   TEMPLATES SECTION  --->
+  <!--------------------------->
+  <div class="login-screen ">
+    <div class="view view-main">
+      <div class="page">
+        <div class="page-content login-screen-content">
+          <form id="check-user"  class="ajax-submit"  method="post" action="">
+            <div class="list-block">
+              <div class="content-block-title text-center"><img src="/assets/images/Problemator_logo_big_yellow.svg" /></div>
+              <div class="login-screen-title"><h2>Problemator</h2></div>
+              <div class="content-block-title text-center body-text-w text-center">Climbing is dangerous.<br />You may also get addicted to it!</div>
+              <ul>
+                <li class="item-content">
+                  <div class="item-inner">
+                    <div class="item-input">
+                      <input type="text" name="username" placeholder="Your e-mail" value=""  />
+                    </div>
+                  </div>
+                </li>
+                <li class="item-content">
+                  <div class="item-inner">
+                    <div class="item-input">
+                      <input type="password" name="password" id="password" placeholder="Your password" value="" />
+                    </div>
+                  </div>
+                </li>
+                <li class="item-content">
+                  <div class="item-inner">
+                    <div class="item-input">
+                      <select name="problematorlocation" id="problematorlocation" >
+                        <option value=""> Choose a gym</option>
+                        <option value="1">Pasila</option>
+                      </select>
+                      <input type="hidden" name="authenticate" value="true" />
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="list-block">
+              <div class="list-block-label">
+                <div class="row">
+                  <div class="col-100 text-g">By registering/logging in you accept the <a href="https://www.problemator.fi/tos.html" class="external text-y">Terms of Use</a></div>
+                </div>
+              </div>
+            </div>
+            <div class="list-block">
+              <div class="list-block-label">
+                <div class="row">
+                  <div class="col-50 text-left">
+                    <button type="button" class="loginbutton button color-problematoryellow body-text-w">Log in</button>
+                  </div>
+                  <div class="col-50 text-center vcenter pad20">
+                    <span class="text-g">or</span> <a class="problemator-link external" href="https://www.problemator.fi/t/problematormobile/signup/">Sign up</a>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-100 text-left padtop"><a href="https://www.problemator.fi/t/problematormobile/forgotpassword/" class="external text-w ">Forgot password?</a></div>
+                </div>
+                <div class="row">
+                  <div class="col-100 text-left padtop">
+                    <a href="#" id="facebook-login" class="external text-w"><span class="fa fa-facebook-official"></span> Log in with Facebook</a>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div><!-- end of login screen -->
+
+
+
   <script type="text/javascript" src="cordova.js"></script>
   <script type="text/javascript" src="lib/framework7/js/framework7.min.js"></script>
   <script type="text/javascript" src="assets/listeners/f7_listeners.js?ver="></script>
+  <script type="text/javascript" src="assets/helpers/template7_helpers.js?ver="></script>
   <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
   <script type="text/javascript" src="bower_components/js-cookie/src/js.cookie.js"></script>
   <script type="text/javascript" src="bower_components/jStorage/jstorage.min.js"></script>

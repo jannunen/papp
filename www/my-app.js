@@ -5,7 +5,7 @@ var pieSport = null;
 var pieBoulder = null;
 var data_opinions = []; // For problem page Morris chart.
 var tickSaved = false;
-var initialized = false;
+window.initialized = false;
 Template7.registerHelper('stringify', function (context){
     var str = JSON.stringify(context);
     // Need to replace any single quotes in the data with the HTML char to avoid string being cut short
@@ -115,12 +115,11 @@ var mainView = myApp.addView('.view-main', {
 $$(document).on('pageInit', function (e) {
   // Check if login ok and go for dashboard init if is.
   //
-  if (!initialized) {
+  if (!window.initialized) {
+    // If first initializing, add listeners to listen sidebar menu items
     addIndexPageListeners("index");
-    debugger;
     if (Cookies.get("loginok")) {
       myApp.closeModal(".login-screen");
-      //myApp.showPreloader('Hang on, initializing app.');
       var uid = Cookies.get("uid");
       $("#userid").val(uid);
       window.uid = uid;
@@ -129,13 +128,14 @@ $$(document).on('pageInit', function (e) {
       addLoginPageListeners();
       myApp.loginScreen();
     }
-    initialized = true;
+    window.initialized = true;
   } 
 });
 myApp.init(); // init app manually after you've attached all handlers
 myApp.onPageInit("*",function(page) {
   var pagename = page.name;
   var matches = null;
+
   /*
      addGroupMemberListeners(pagename);
      addInviteMemberPageListeners(pagename);
@@ -143,10 +143,13 @@ myApp.onPageInit("*",function(page) {
      addGroupPageListeners(pagename);
      addProblemsPageListeners(pagename);
      */
+      if (!Cookies.get("loginok")) {
+        return false;
+      }
     console.log("Initi: "+pagename);
     //addLoginPageListeners(pagename);
   addDashBoardListeners(pagename);
-  addIndexPageListeners(pagename,page);
+  //addIndexPageListeners(pagename,page);
 
 });
 

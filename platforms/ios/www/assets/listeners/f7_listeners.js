@@ -10,7 +10,6 @@ var indexController= {
 }
 var addDashBoardListeners = function(pagename) {
   if ("dash"==pagename) {
-    debugger;
     myApp.hidePreloader();
     if (Cookies.get("whatsnew"+ver)==undefined) {
       Cookies.set("whatsnew"+ver,true,{ expires: 7650 });
@@ -146,9 +145,7 @@ var addLoginPageListeners = function(pagename) {
 }
 var addIndexPageListeners = function(pagename,page) {
     if ("index"==pagename) {
-    debugger;
       $$(".btn_logout").on("click",function() {
-        debugger;
         Cookies.remove("loginok");
         Cookies.remove("uid");
         window.uid = null;

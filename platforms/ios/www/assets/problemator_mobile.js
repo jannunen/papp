@@ -14,6 +14,7 @@ jQuery.browser = {};
     jQuery.browser.version = RegExp.$1;
   }
 })();
+
   var saveTickFunction = function(self,action, callback) {
     var pid = $(self).attr("data-id");
 

@@ -1,22 +1,33 @@
-<div data-page="dash" class="page">
-
+<div class="navbar">
+  <div  class="navbar-inner">
+    <div class="left">
+      <a class="" href="#"><img src="assets/images/problemator_logo_small.svg" alt="logo" /></a>
+    </div>
+    <div class="center">
+      Problemator
+    </div>
+    <div class="right">
+      <a href="#" class="link icon-only open-panel"> <i class="fa fa-bars"></i></a>
+    </div>
+  </div>
+</div>
+<div data-page="dash" class="page ">
   <div class="page-content">
-
     <div id="status">
       <div class="content-block bg-light nomargin">
-	<div class="content-block-inner bg-light">
-	  <div class="row">
-	    <div class="col-33 body-text-w">
-	      <span id="curloc">{{#if locinfo}}{{locinfo.name}}{{/if}}</span>
-	      <input type="hidden" name="location" id="location" value="{{#if locinfo}}{{locinfo.id}}{{/if}}" />
-	    </div>
-	    <div class="col-66 body-text-w text-right">
-	      {{#if climber}}
-	      {{climber.etunimi}} {{climber.sukunimi}} <small class="text-g">{{climber.id}}</small>
-	      {{/if}}
-	    </div>
-	  </div>
-	</div>
+        <div class="content-block-inner bg-light">
+          <div class="row">
+            <div class="col-33 body-text-w">
+              <span id="curloc">{{#if locinfo}}{{locinfo.name}}{{/if}}</span>
+              <input type="hidden" name="location" id="location" value="{{#if locinfo}}{{locinfo.id}}{{/if}}" />
+            </div>
+            <div class="col-66 body-text-w text-right">
+              {{#if climber}}
+              {{climber.etunimi}} {{climber.sukunimi}} <small class="text-g">{{climber.id}}</small>
+              {{/if}}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

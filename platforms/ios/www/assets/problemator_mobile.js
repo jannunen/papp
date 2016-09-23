@@ -61,51 +61,6 @@ $( document ).ajaxSuccess(function( event, xhr, settings ) {
      return false;
   });
  //- One group, title, three buttons
-  $(document).on('click','.open_betavideos_actionsheet', function () {
-    var _pid = $(this).attr("pid");
-    $.getJSON("/t/problematormobile/_betavideos/",{pid : _pid},function(betavideos) {
-
-      var buttons = [
-        {
-          text: 'Choose a betavideo',
-          label: true
-        },
-      ];
-      // ADd videos
-      for (var idx in betavideos) {
-        var v = betavideos[idx];
-        var txt = '<a href="'+v.video_url+'" class="external">'+v.video_url+'</a>';
-        if (v.userid == $("#userid").val()) {
-          txt += '&nbsp; <a class="del_betavideo" href="#" data-href="/t/problematormobile/del_betavideo/?vid='+v.id+'">del</a>';
-        }
-
-        buttons.push({
-          text : txt,
-          label : true,
-        }); 
-      }
-
-      // Add cancel
-      buttons.push({
-        text: 'Cancel',
-        color: 'yellow'
-      });
-
-      myApp.actions(buttons);
-    });
-    return false;
-  }); 
-  $(document).on("click",".add_video",function() {
-    var pid = $(this).attr("pid");
-      myApp.prompt('Paste video url here. Note that you can link video starting from a certain point.<br /><br /><strong>Vimeo:</strong> Click share, click Link and add timecode if needed.<br /><br /><strong>Youtube:</strong> Right click and "Copy video at URL" or "Copy video URL at current time"','Add a betavideo', function (value) {
-        var url = "/t/problematormobile/savebetavideo/";
-        $.post(url,{"url" : value, "problemid":pid},function(back) {
-          myApp.alert(back,"All is golden");
-          mainView.router.refreshPage();
-        });
-      });
-     return false;
-  });
 
   $(document).on("click",".openfloorplan",function() {
     var gymid = $("#gymid").val();

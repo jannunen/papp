@@ -266,10 +266,56 @@ var addSingleProblemListeners = function(pagename) {
       $$('.prompt-feedback').on('click', function () {
         myApp.prompt('You can enter your feedback about the problem, what problems you would like to have or something in general','Send feedback', function (value) {
           var url = window.api.apicallbase + "savefeedback/?msgtype=message";
-          $.jsonp(url,{"text" : value, "problemid":pid},function(back) {
-            myApp.alert(back,"All is golden");
+          $.jsonp(url,{"text" : value, "pid":pid},function(back) {
+            myApp.alert(back);
           });
         });
+      });
+      $(document).on('click','.open_betavideos_actionsheet', function () {
+        var _pid = $(this).attr("pid");
+        $.jsonp(window.api.apicallbase+"betavideos/",{pid : _pid},function(betavideos) {
+          var buttons = [
+            {
+              text: 'Choose a betavideo',
+              label: true
+            },
+          ];
+          // ADd videos
+          for (var idx in betavideos) {
+            var v = betavideos[idx];
+            var txt = '<a href="'+v.video_url+'" class="external">'+v.video_url+'</a>';
+            if (v.userid == $("#userid").val()) {
+              txt += '&nbsp; <a class="del_betavideo" href="#" data-href="'+window.api.apicallbase+'del_betavideo/?vid='+v.id+'">del</a>';
+            }
+
+            buttons.push({
+              text : txt,
+              label : true,
+            }); 
+          }
+
+          // Add cancel
+          buttons.push({
+            text: 'Cancel',
+            color: 'yellow'
+          });
+
+          myApp.actions(buttons);
+        });
+        return false;
+      }); 
+      $(document).on("click",".add_video",function() {
+        var pid = $(this).attr("pid");
+        myApp.prompt('Paste video url here. Note that you can link video starting from a certain point.<br /><br /><strong>Vimeo:</strong> Click share, click Link and add timecode if needed.<br /><br /><strong>Youtube:</strong> Right click and "Copy video at URL" or "Copy video URL at current time"','Add a betavideo', function (value) {
+          var url = window.api.apicallbase + "savebetavideo/";
+          $.jsonp(url,{"url" : value, "pid":pid},function(back) {
+            myApp.alert(back.message);
+            if (!JSON.stringify(back).match(/error/i)) {
+              mainView.router.refreshPage();
+            }
+          });
+        });
+        return false;
       });
     })(probid);
 

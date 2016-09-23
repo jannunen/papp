@@ -243,7 +243,6 @@ var addSingleProblemListeners = function(pagename) {
     // Add listeners for dirty, dangerous and message.
     var probid = matches[1];
     (function(pid) {
-
       $$(".mark_dangerous").on("click",function() {
         // Ask reason and send straight.
         myApp.prompt('What makes the problem dangerous?','Send feedback', function (value) {

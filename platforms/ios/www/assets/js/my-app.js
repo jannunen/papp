@@ -1,14 +1,21 @@
+var chartsInitialized = false;
+var dashboardLineChart = null;
+var dashboardBarChart = null;
+var pieSport = null;
+var pieBoulder = null;
+var data_opinions = []; // For problem page Morris chart.
+var tickSaved = false;
+window.initialized = false;
 Template7.registerHelper('stringify', function (context){
-	var str = JSON.stringify(context);
-	// Need to replace any single quotes in the data with the HTML char to avoid string being cut short
-	return str.split("'").join('&#39;');
+    var str = JSON.stringify(context);
+    // Need to replace any single quotes in the data with the HTML char to avoid string being cut short
+    return str.split("'").join('&#39;');
 });
 
 // Initialize your app
 var myApp = new Framework7({
-	// Enable templates auto precompilation
+  init : false,
 	preprocess: function (content, url, next) {
-		debugger;
 		var matches = null;
 		if (url == null) {
 			if (next != null) {
@@ -32,7 +39,6 @@ var myApp = new Framework7({
 		} else if ((matches=url.match(/dashboard.html/))) {
 			$.jsonp(window.api.apicallbase+"dashinfo/?id="+Cookies.get("uid"),{},function(data) {
 				loginCheck(data);
-				debugger;
 				$.jStorage.set("grades",data.grades);
 				var compiledTemplate = Template7.compile(content);
 				var html = compiledTemplate(data);
@@ -73,7 +79,6 @@ var myApp = new Framework7({
 			var pid = matches[1];
 			var url = window.api.apicallbase + "problem";
 			$.jsonp(url, {id : pid}, function (data){ 
-				debugger;
 				var compiledTemplate = Template7.compile(content);
 				data.grades = $.jStorage.get("grades");
 				var html = compiledTemplate(data);
@@ -91,43 +96,67 @@ var myApp = new Framework7({
 			return resultContent; 
 		}
 	},
-	precompileTemplates: true,
-	template7Pages: true, // need to set this
-	modalTitle: "Problemator",
-init : false
-});
+    precompileTemplates: true,
+		template7Pages: true, // need to set this
+		modalTitle: "Problemator",
+    pushState : true,
+})
+
+
 
 // Export selectors engine (jQuery ish )
 var $$ = Dom7;
 
 // Add views - this app uses only a main view stack
 var mainView = myApp.addView('.view-main', {
-dynamicNavbar: true
+	dynamicNavbar: true
+});
+
+$$(document).on('pageInit', function (e) {
+  // Check if login ok and go for dashboard init if is.
+  //
+  if (!window.initialized) {
+    // If first initializing, add listeners to listen sidebar menu items
+    addIndexPageListeners("index");
+    if (Cookies.get("loginok")) {
+      myApp.closeModal(".login-screen");
+      var uid = Cookies.get("uid");
+      $("#userid").val(uid);
+      window.uid = uid;
+      indexController.initializeIndexPage();
+    } else {
+      addLoginPageListeners();
+      myApp.loginScreen();
+    }
+    window.initialized = true;
+  } 
+});
+myApp.init(); // init app manually after you've attached all handlers
+myApp.onPageInit("*",function(page) {
+  var pagename = page.name;
+  var matches = null;
+
+  /*
+     addGroupMemberListeners(pagename);
+     addInviteMemberPageListeners(pagename);
+     addSingleGroupPageListeners(pagename,page.url);
+     addGroupPageListeners(pagename);
+     */
+  if (!Cookies.get("loginok")) {
+    return false;
+  }
+  console.log("Initi: "+pagename);
+  addSingleProblemListeners(pagename);
+  addProblemsPageListeners(pagename);
+  addDashBoardListeners(pagename);
+
 });
 
 
-// Handle Cordova Device Ready Event
-$$(document).on('deviceready', function() {
-		console.log("Device is ready!");
-		addLoginPageListeners();
-		});
+document.addEventListener("deviceready", function(){
+    console.log("Device is ready... :)");
+         },true);
 
-myApp.onPageInit("*",function(page) {
-		var pagename = page.name;
-		var matches = null;
-		/*
-			 addGroupMemberListeners(pagename);
-			 addInviteMemberPageListeners(pagename);
-			 addSingleGroupPageListeners(pagename,page.url);
-			 addGroupPageListeners(pagename);
-			 addProblemsPageListeners(pagename);
-			 */
-		debugger;
-		addIndexPageListeners(pagename,page);
 
-	});
 
-	$$(document).on('click', '#home', function (e) {
-		mainView.router.load({url: 'index.html'}); // need to fix, causes issues on mobile only when try to re-search again
-		myApp.closePanel();
-	});
+

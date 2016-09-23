@@ -2,6 +2,7 @@ var loginCheck = function(data) {
   data = JSON.stringify(data);
   if (data && data.match(/Login.failed/i)) {
     myApp.alert("Session expired");
+    mainView.router.load("#index");
     myApp.loginScreen();
     Cookies.remove("loginok");
   }  else {
@@ -20,6 +21,10 @@ $.jsonp = function(url,_data,callback) {
           console.log("back from jsonp with status "+status+", url: "+url);
          loginCheck(xhr.responseJSON);
           callback(xhr.responseJSON);
+        },
+        error : function(data, status, thrown) {
+          debugger;
+          console.log("back from jsonp with ERROR "+thrown.message+", url: "+url);
         }
  });
 }

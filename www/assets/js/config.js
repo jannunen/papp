@@ -1,7 +1,7 @@
 var api = {
   server : "http://"+"beta.problemator.fi",
   api : "/t/problematorapi/",
-  version : "v01/",
+  version : "v02/",
 };
 window.ver = "1.0";
 window.fbappid = "903410899677635";

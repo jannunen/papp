@@ -236,6 +236,112 @@ var addGroupMemberListeners = function(pagename) {
     });
   }
 }
+var addSingleProblemListeners = function(pagename) {
+
+   // If matches single problem
+  if ((matches=pagename.match(/problem(\d+)/))) {
+    // Add listeners for dirty, dangerous and message.
+    var probid = matches[1];
+    (function(pid) {
+
+      $$(".mark_dangerous").on("click",function() {
+        // Ask reason and send straight.
+        myApp.prompt('What makes the problem dangerous?','Send feedback', function (value) {
+          var url = window.api.apicallbase + "savefeedback/?msgtype=dangerous";
+          $.jsonp(url,{"text" : value, "problemid":pid},function(back) {
+            myApp.alert(back,"Message");
+          });
+        });
+
+      });
+      $$(".mark_dirty").on("click",function() {
+        // Ask reason and send straight.
+        myApp.prompt('Describe dirtyness, if you can. It makes our life easier.','Send feedback', function (value) {
+          var url = window.api.apicallbase + "savefeedback/?msgtype=dirty";
+          $.jsonp(url,{"text" : value, "problemid":pid},function(back) {
+            myApp.alert(back,"Message");
+          });
+        });
+      });
+      $$('.prompt-feedback').on('click', function () {
+        myApp.prompt('You can enter your feedback about the problem, what problems you would like to have or something in general','Send feedback', function (value) {
+          var url = window.api.apicallbase + "savefeedback/?msgtype=message";
+          $.jsonp(url,{"text" : value, "problemid":pid},function(back) {
+            myApp.alert(back,"All is golden");
+          });
+        });
+      });
+    })(probid);
+
+
+    var saveTickFunction = function(self,action, callback) {
+      var pid = $(self).attr("data-id");
+
+      var grade_opinion = $(self).parents(".page-problem").find(".grade_opinion").val();
+      var ascent_type = $(self).parents(".page-problem").find(".ascent_type").val();
+      var like = $(self).parents(".page-problem").find("input[name=rating]:checked").val();
+      var tickdate = $(self).parents(".page-problem").find(".tickdate").val();
+      var tries = $(self).parents(".page-problem").find(".tries").val();
+      var dislike = 0;
+      var love = 0;
+      if (like == 0) {
+        dislike = 1;
+      }
+      if (like == 2) {
+        love = 1;
+        like = 0;
+      }
+      if (like == undefined) {
+        like = 0;
+      }
+      if (action == undefined) {
+        action = "savetick";
+      }
+      var url = "/t/problematormobile/"+action+"/";
+      var data = {
+        "a_like" : like,
+        "a_love" : love,
+        "a_dislike": dislike,
+        "problemid": pid,
+        "grade_opinion" : grade_opinion,
+        "userid" : $("#userid").val(),
+        "tries" : tries,
+        "ascent_type" : ascent_type,
+        "tickdate" : tickdate,
+      };
+
+      $.get(url,data,function(back) {
+        if (callback != undefined) {
+          var likeContainer = $("#swipe"+pid+" .item-after .likes");
+          if (data.a_like> 0) {
+            // Update data-count
+            var curCount = likeContainer.find("span.fa-thumbs-up").data("count");
+            curCount = parseInt(curCount);
+            if (isNaN(curCount)) {
+              curCount = 0;
+            }
+            curCount += data.a_like;
+            likeContainer.find("span.fa-thumbs-up").data("count",curCount);
+            likeContainer.find("span.fa-thumbs-up").text(curCount);
+          } 
+          if (data.a_love > 0) {
+            // Update data-count
+            var curCount = likeContainer.find("span.fa-heart").data("count");
+            curCount = parseInt(curCount);
+            if (isNaN(curCount)) {
+              curCount = 0;
+            }
+            curCount += data.a_love;
+            likeContainer.find("span.fa-heart").data("count",curCount);
+            likeContainer.find("span.fa-heart").text(curCount);
+          }
+          callback(back,data);
+        }
+      });
+    };
+  }
+
+}
 var addSingleGroupPageListeners = function(pagename,url) {
   if ("singlegroup"==pagename) { 
     $$(".groupmenu-open").on("click",function() {

@@ -39,6 +39,7 @@ var myApp = new Framework7({
 		} else if ((matches=url.match(/dashboard.html/))) {
 			$.jsonp(window.api.apicallbase+"dashinfo/?id="+Cookies.get("uid"),{},function(data) {
 				loginCheck(data);
+        myApp.hidePreloader();
 				$.jStorage.set("grades",data.grades);
 				var compiledTemplate = Template7.compile(content);
 				var html = compiledTemplate(data);

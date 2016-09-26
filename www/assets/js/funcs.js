@@ -2,9 +2,11 @@ var loginCheck = function(data) {
   data = JSON.stringify(data);
   if (data && data.match(/Login.failed/i)) {
     myApp.alert("Session expired");
-    mainView.router.load("#index");
-    myApp.loginScreen();
+    //mainView.router.load("#index");
+    debugger;
+    window.uid = null;
     Cookies.remove("loginok");
+    myApp.loginScreen();
   }  else {
     window.uid = 	  Cookies.get("uid");
     $("#userid").val(window.uid);

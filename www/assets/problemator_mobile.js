@@ -50,16 +50,6 @@ $( document ).ajaxSuccess(function( event, xhr, settings ) {
     myApp.loginScreen();
   }
 })
-  $(document).on('click','.del_betavideo', function () {
-     var url = $(this).attr("data-href"); 
-     $.post(url,{},function(back) {
-       myApp.alert(back);
-       // Close the action sheet also
-       myApp.closeModal();
-       mainView.router.refreshPage();
-     }); 
-     return false;
-  });
  //- One group, title, three buttons
 
   $(document).on("click",".openfloorplan",function() {

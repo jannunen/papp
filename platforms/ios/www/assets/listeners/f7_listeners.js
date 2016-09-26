@@ -1,3 +1,13 @@
+var singleProblemListenersInitialized = false;
+var problemsPageListenersInitialized = false;
+var dashBoardListenersInitialized = false;
+var loginPageListenersInitialized = false;
+var indexPageListenersInitialized = false;
+var groupPageListenersInitialized = false;
+var singleGroupPageListenersInitialized = false;
+var groupMemberPageListenersInitialized = false;
+var inviteMemberPageListenersInitialized = false;
+
 var indexController= {
   initializeIndexPage : function() { 
     // Data is set in my-app preprocess -function
@@ -9,7 +19,7 @@ var indexController= {
   }
 }
 var addDashBoardListeners = function(pagename) {
-  if ("dash"==pagename) {
+  if ("dash"==pagename && !dashBoardListenersInitialized) {
     myApp.hidePreloader();
     if (Cookies.get("whatsnew"+ver)==undefined) {
       Cookies.set("whatsnew"+ver,true,{ expires: 7650 });
@@ -109,42 +119,45 @@ var addDashBoardListeners = function(pagename) {
         });
       }
     }
+    dashBoardListenersInitialized = true;
   } // if pagename
 }
 var addLoginPageListeners = function(pagename) {
-  $$('.loginbutton').on('click', function (e) {
-    if ($("#problematorlocation").val()=="") {
-      myApp.alert("Please select a gym","Gym not selected");
-      return false;
-    }
-    var username = $(this).parents("form").find('input[name="username"]').val();
-    var password = $(this).parents("form").find('input[name="password"]').val();
-    var loc = $(this).parents("form").find("#problematorlocation").val();
-    // Handle username and password
-    var url = window.api.apicallbase + "dologin?native=true"; 
-    $.jsonp(url,{"username": username,"password":password,"problematorlocation" : loc, "authenticate" : true},function(data) {
-      try {
-        if (data && data.loc) {
-          Cookies.set("nativeproblematorlocation",data.loc);
-          Cookies.set("loginok",true);
-          Cookies.set("uid",data.uid);
-          window.uid = data.uid;
-          // Initialize index page.
-          myApp.closeModal();
-          myApp.showPreloader('Hang on, initializing app.');
-          indexController.initializeIndexPage();
-        } else {
+  if (!loginPageListenersInitialized) {
+    $$('.loginbutton').on('click', function (e) {
+      if ($("#problematorlocation").val()=="") {
+        myApp.alert("Please select a gym","Gym not selected");
+        return false;
+      }
+      var username = $(this).parents("form").find('input[name="username"]').val();
+      var password = $(this).parents("form").find('input[name="password"]').val();
+      var loc = $(this).parents("form").find("#problematorlocation").val();
+      // Handle username and password
+      var url = window.api.apicallbase + "dologin?native=true"; 
+      $.jsonp(url,{"username": username,"password":password,"problematorlocation" : loc, "authenticate" : true},function(data) {
+        try {
+          if (data && data.loc) {
+            Cookies.set("nativeproblematorlocation",data.loc);
+            Cookies.set("loginok",true);
+            Cookies.set("uid",data.uid);
+            window.uid = data.uid;
+            // Initialize index page.
+            myApp.closeModal();
+            myApp.showPreloader('Hang on, initializing app.');
+            indexController.initializeIndexPage();
+          } else {
+            myApp.alert(back);
+          }
+        } catch(e) {
           myApp.alert(back);
         }
-      } catch(e) {
-        myApp.alert(back);
-      }
+      });
     });
-  });
-
+     loginPageListenersInitialized = true;
+  }
 }
 var addIndexPageListeners = function(pagename,page) {
-    if ("index"==pagename) {
+    if ("index"==pagename && !indexPageListenersInitialized) {
       $$(".btn_logout").on("click",function() {
         Cookies.remove("loginok");
         Cookies.remove("uid");
@@ -166,18 +179,23 @@ var addIndexPageListeners = function(pagename,page) {
           });
         });
       });
+      indexPageListenersInitialized = true;
     }
 
 }
 
 var   addProblemsPageListeners = function(pagename) {
+
   if ("problems-page"==pagename) {
+    if (!problemsPageListenersInitialized) {
+       problemsPageListenersInitialized = true;
+    }
 
   }
 }
 
 var addGroupPageListeners = function(pagename) {
-  if ("grouplist"==pagename) {
+  if ("grouplist"==pagename && !groupPageListenersInitialized) {
     $$(".search_groups").on("keyup",function(e) {
       var val = $(this).val();
       val = val.trim();
@@ -200,11 +218,11 @@ var addGroupPageListeners = function(pagename) {
         });
       }
     });
-
+    groupPageListenersInitialized = true;
   }
 }
 var addGroupMemberListeners = function(pagename) {
-  if ("list_group_members"==pagename) { 
+  if ("list_group_members"==pagename && !groupMemberPageListenersInitialized) { 
     $$(".remove_user_from_group").on("click",function() {
       var self = $(this);
       var li = $(this).parents("li");
@@ -234,16 +252,48 @@ var addGroupMemberListeners = function(pagename) {
         $(this).parents(".single_group").find(".groupmembers li").show();
       }
     });
+    groupMemberPageListenersInitialized = true;
   }
 }
 var addSingleProblemListeners = function(pagename) {
 
    // If matches single problem
-  if ((matches=pagename.match(/problem(\d+)/))) {
+  if ((matches=pagename.match(/problem(\d+)/)) && !singleProblemListenersInitialized) {
     // Add listeners for dirty, dangerous and message.
     var probid = matches[1];
     (function(pid) {
-      $$(".mark_dangerous").on("click",function() {
+			// SHow global ascents
+			$(document).on("click",".show_global_ascents",function(e) {
+				var clickedLink = this;
+				var pid = $(this).data("id");
+				var url = window.api.apicallbase + "global_ascents/?pid="+pid;
+				$.get(url,{pid : pid},function(back) {
+					myApp.popover(back, clickedLink);
+
+				});
+			});
+			$(document).on("click",".spinnerminus",function() {
+				var cur = parseInt($(this).siblings("input").val());
+				cur--;
+				if (cur <= 0) {
+					cur = 1;
+				}
+				$(this).siblings("input").val(cur);
+			});
+			$(document).on("click",".spinnerplus",function() {
+				var cur = parseInt($(this).siblings("input").val());
+				cur++;
+				$(this).siblings("input").val(cur);
+			});
+
+			$(document).on("click","#btn_savesettings",function() {
+				$("#frmsettings").ajaxSubmit(function(back) {
+					myApp.alert(back, 'Info');
+
+				});
+				return false;
+			});
+			$$(".mark_dangerous").on("click",function() {
         // Ask reason and send straight.
         myApp.prompt('What makes the problem dangerous?','Send feedback', function (value) {
           var url = window.api.apicallbase + "savefeedback/?msgtype=dangerous";
@@ -284,7 +334,7 @@ var addSingleProblemListeners = function(pagename) {
             var v = betavideos[idx];
             var txt = '<a href="'+v.video_url+'" class="external">'+v.video_url+'</a>';
             if (v.userid == $("#userid").val()) {
-              txt += '&nbsp; <a class="del_betavideo" href="#" data-href="'+window.api.apicallbase+'del_betavideo/?vid='+v.id+'">del</a>';
+              txt += '&nbsp; <a class="del_betavideo" href="#" data-href="#">del</a>';
             }
 
             buttons.push({
@@ -316,6 +366,17 @@ var addSingleProblemListeners = function(pagename) {
         });
         return false;
       });
+      $(document).on('click','.del_betavideo', function () {
+        var url = window.api.apicallbase +"delbetavideo/";
+        $.jsonp(url,{},function(back) {
+          myApp.alert(back);
+          // Close the action sheet also
+          myApp.closeModal();
+          mainView.router.refreshPage();
+        }); 
+        return false;
+      });
+
     })(probid);
 
 
@@ -384,11 +445,12 @@ var addSingleProblemListeners = function(pagename) {
         }
       });
     };
+    singleProblemListenersInitialized = true;
   }
 
 }
 var addSingleGroupPageListeners = function(pagename,url) {
-  if ("singlegroup"==pagename) { 
+  if ("singlegroup"==pagename && !singleGroupPageListenersInitialized) { 
     $$(".groupmenu-open").on("click",function() {
       var isme = $(this).data("me") != "";
       var gid = $(this).data("gid");
@@ -466,6 +528,7 @@ var addSingleGroupPageListeners = function(pagename,url) {
       });
       return false;
     });
+    singleGroupPageListenersInitialized = true;
   }
 }
 
@@ -498,7 +561,7 @@ var addGroupLeaveJoinListeners = function() {
   });
 }
 var addInviteMemberPageListeners = function(pagename) {
-  if ("invite_group_member"==pagename) { 
+  if ("invite_group_member"==pagename && !inviteMemberPageListenersInitialized) { 
     // What to do when plus is clicked and email is added to the list
     $$(".add_invite_email").on('click',function() {
       // Validate email and add to emails list.
@@ -546,6 +609,7 @@ var addInviteMemberPageListeners = function(pagename) {
         });
       }
     });
+    inviteMemberPageListenersInitialized = true;
   }
 };
 

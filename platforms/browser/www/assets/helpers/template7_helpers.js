@@ -21,7 +21,6 @@ Template7.registerHelper('default',function(string, defaultString, options) {
 });
 Template7.registerHelper('date_format',function(dateString, format, options) {
   var date = null;
-   debugger;
   if ("now" == dateString) {
     date = moment();
   } else {

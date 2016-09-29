@@ -7,14 +7,14 @@ var data_opinions = []; // For problem page Morris chart.
 var tickSaved = false;
 window.initialized = false;
 Template7.registerHelper('stringify', function (context){
-    var str = JSON.stringify(context);
-    // Need to replace any single quotes in the data with the HTML char to avoid string being cut short
-    return str.split("'").join('&#39;');
+	var str = JSON.stringify(context);
+	// Need to replace any single quotes in the data with the HTML char to avoid string being cut short
+	return str.split("'").join('&#39;');
 });
 
 // Initialize your app
 var myApp = new Framework7({
-  init : false,
+	init : false,
 	preprocess: function (content, url, next) {
 		var matches = null;
 		if (url == null) {
@@ -32,14 +32,20 @@ var myApp = new Framework7({
 			var groupid = matches[1];
 			var url = window.api.apicallbase + "group/";
 			$$.jsonp(url, {id : groupid}, function (data){ 
+				if (!Cookies.get("loginok")) {
+					return false;
+				}
 				var compiledTemplate = Template7.compile(content);
 				var dataJSON = {group : JSON.parse(data)};
 				next(compiledTemplate(dataJSON));
 			});
 		} else if ((matches=url.match(/dashboard.html/))) {
 			$.jsonp(window.api.apicallbase+"dashinfo/?id="+Cookies.get("uid"),{},function(data) {
+				if (!Cookies.get("loginok")) {
+					return false;
+				}
 				loginCheck(data);
-        myApp.hidePreloader();
+				myApp.hidePreloader();
 				$.jStorage.set("grades",data.grades);
 				var compiledTemplate = Template7.compile(content);
 				var html = compiledTemplate(data);
@@ -52,6 +58,9 @@ var myApp = new Framework7({
 			var url = window.api.apicallbase + "problems/?jsonp=true";
 
 			$.jsonp(url, {}, function (data){ 
+				if (!Cookies.get("loginok")) {
+					return false;
+				}
 				var compiledTemplate = Template7.compile(content);
 				var dataJSON = {walls : data};
 				next(compiledTemplate(dataJSON));
@@ -60,6 +69,9 @@ var myApp = new Framework7({
 			var groupid = matches[1];
 			var url = window.api.apicallbase + "group/";
 			$.jsonp(url, {id : groupid}, function (data){ 
+				if (!Cookies.get("loginok")) {
+					return false;
+				}
 				var compiledTemplate = Template7.compile(content);
 				var dataJSON = {group : data};
 				next(compiledTemplate(dataJSON));
@@ -69,6 +81,9 @@ var myApp = new Framework7({
 			var groupid = matches[1];
 			var url = window.api.apicallbase + "list_group_members/";
 			$.jsonp(url, {id : groupid}, function (data){ 
+				if (!Cookies.get("loginok")) {
+					return false;
+				}
 				var compiledTemplate = Template7.compile(content);
 				var dataJSON = {"group" : data};
 				var html = compiledTemplate(dataJSON);
@@ -80,6 +95,9 @@ var myApp = new Framework7({
 			var pid = matches[1];
 			var url = window.api.apicallbase + "problem";
 			$.jsonp(url, {id : pid}, function (data){ 
+				if (!Cookies.get("loginok")) {
+					return false;
+				}
 				var compiledTemplate = Template7.compile(content);
 				data.grades = $.jStorage.get("grades");
 				var html = compiledTemplate(data);
@@ -97,10 +115,10 @@ var myApp = new Framework7({
 			return resultContent; 
 		}
 	},
-    precompileTemplates: true,
-		template7Pages: true, // need to set this
-		modalTitle: "Problemator",
-    pushState : true,
+	precompileTemplates: true,
+	template7Pages: true, // need to set this
+	modalTitle: "Problemator",
+	pushState : true,
 })
 
 
@@ -114,49 +132,49 @@ var mainView = myApp.addView('.view-main', {
 });
 
 $$(document).on('pageInit', function (e) {
-  // Check if login ok and go for dashboard init if is.
-  //
-  if (!window.initialized) {
-    // If first initializing, add listeners to listen sidebar menu items
-    addIndexPageListeners("index");
-    if (Cookies.get("loginok")) {
-      myApp.closeModal(".login-screen");
-      var uid = Cookies.get("uid");
-      $("#userid").val(uid);
-      window.uid = uid;
-      indexController.initializeIndexPage();
-    } else {
-      addLoginPageListeners();
-      myApp.loginScreen();
-    }
-    window.initialized = true;
-  } 
+	// Check if login ok and go for dashboard init if is.
+	//
+	if (!window.initialized) {
+		// If first initializing, add listeners to listen sidebar menu items
+		addIndexPageListeners("index");
+		if (Cookies.get("loginok")) {
+			myApp.closeModal(".login-screen");
+			var uid = Cookies.get("uid");
+			$("#userid").val(uid);
+			window.uid = uid;
+			indexController.initializeIndexPage();
+		} else {
+			addLoginPageListeners();
+			myApp.loginScreen();
+		}
+		window.initialized = true;
+	} 
 });
 myApp.init(); // init app manually after you've attached all handlers
 myApp.onPageInit("*",function(page) {
-  var pagename = page.name;
-  var matches = null;
+	var pagename = page.name;
+	var matches = null;
 
-  /*
-     addGroupMemberListeners(pagename);
-     addInviteMemberPageListeners(pagename);
-     addSingleGroupPageListeners(pagename,page.url);
-     addGroupPageListeners(pagename);
-     */
-  if (!Cookies.get("loginok")) {
-    return false;
-  }
-  console.log("Initi: "+pagename);
-  addSingleProblemListeners(pagename);
-  addProblemsPageListeners(pagename);
-  addDashBoardListeners(pagename);
+	/*
+		 addGroupMemberListeners(pagename);
+		 addInviteMemberPageListeners(pagename);
+		 addSingleGroupPageListeners(pagename,page.url);
+		 addGroupPageListeners(pagename);
+		 */
+	if (!Cookies.get("loginok")) {
+		return false;
+	}
+	console.log("Initi: "+pagename);
+	addSingleProblemListeners(pagename);
+	addProblemsPageListeners(pagename);
+	addDashBoardListeners(pagename);
 
 });
 
 
 document.addEventListener("deviceready", function(){
-    console.log("Device is ready... :)");
-         },true);
+	console.log("Device is ready... :)");
+},true);
 
 
 

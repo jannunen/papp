@@ -153,34 +153,34 @@ var addLoginPageListeners = function(pagename) {
         }
       });
     });
-     loginPageListenersInitialized = true;
+    loginPageListenersInitialized = true;
   }
 }
 var addIndexPageListeners = function(pagename,page) {
-    if ("index"==pagename && !indexPageListenersInitialized) {
-      $$(".btn_logout").on("click",function() {
-        Cookies.remove("loginok");
-        Cookies.remove("uid");
-        window.uid = null;
-        $("#userid").val("");
-        myApp.loginScreen();
-        myApp.closePanel();
+  if ("index"==pagename && !indexPageListenersInitialized) {
+    $$(".btn_logout").on("click",function() {
+      Cookies.remove("loginok");
+      Cookies.remove("uid");
+      window.uid = null;
+      $("#userid").val("");
+      myApp.loginScreen();
+      myApp.closePanel();
 
-      });
-      // Confirm terminate account
-      $$(".opt-out").on("click",function() {
-        myApp.confirm("This action cannot be undone! All your data will be lost.","Are you sure?",function() {
-          var url = window.api.apicallbase + "terminate_account";
-          $.get(url).done(function(back) {
-            myApp.alert(back);
-            setTimeout(function() {
-              document.location.href="/index.html";
-            },5000);
-          });
+    });
+    // Confirm terminate account
+    $$(".opt-out").on("click",function() {
+      myApp.confirm("This action cannot be undone! All your data will be lost.","Are you sure?",function() {
+        var url = window.api.apicallbase + "terminate_account";
+        $.get(url).done(function(back) {
+          myApp.alert(back);
+          setTimeout(function() {
+            document.location.href="/index.html";
+          },5000);
         });
       });
-      indexPageListenersInitialized = true;
-    }
+    });
+    indexPageListenersInitialized = true;
+  }
 
 }
 
@@ -188,7 +188,7 @@ var   addProblemsPageListeners = function(pagename) {
 
   if ("problems-page"==pagename) {
     if (!problemsPageListenersInitialized) {
-       problemsPageListenersInitialized = true;
+      problemsPageListenersInitialized = true;
     }
 
   }
@@ -257,43 +257,46 @@ var addGroupMemberListeners = function(pagename) {
 }
 var addSingleProblemListeners = function(pagename) {
 
-   // If matches single problem
+  // If matches single problem
   if ((matches=pagename.match(/problem(\d+)/)) && !singleProblemListenersInitialized) {
     // Add listeners for dirty, dangerous and message.
     var probid = matches[1];
     (function(pid) {
-			// SHow global ascents
-			$(document).on("click",".show_global_ascents",function(e) {
-				var clickedLink = this;
-				var pid = $(this).data("id");
-				var url = window.api.apicallbase + "global_ascents/?pid="+pid;
-				$.get(url,{pid : pid},function(back) {
-					myApp.popover(back, clickedLink);
+      // SHow global ascents
+      $(document).on("click",".show_global_ascents",function(e) {
+        var clickedLink = this;
+        var pid = $(this).data("id");
+        var url = window.api.apicallbase + "global_ascents/?pid="+pid;
+        $.jsonp(url,{pid : pid},function(back) {
+          var tpl = $("script#global_ascents_popover").html();
+          var ctpl = Template7.compile(tpl);
+          var html = ctpl(back);    
+          myApp.popover(html, clickedLink);
 
-				});
-			});
-			$(document).on("click",".spinnerminus",function() {
-				var cur = parseInt($(this).siblings("input").val());
-				cur--;
-				if (cur <= 0) {
-					cur = 1;
-				}
-				$(this).siblings("input").val(cur);
-			});
-			$(document).on("click",".spinnerplus",function() {
-				var cur = parseInt($(this).siblings("input").val());
-				cur++;
-				$(this).siblings("input").val(cur);
-			});
+        });
+      });
+      $(document).on("click",".spinnerminus",function() {
+        var cur = parseInt($(this).siblings("input").val());
+        cur--;
+        if (cur <= 0) {
+          cur = 1;
+        }
+        $(this).siblings("input").val(cur);
+      });
+      $(document).on("click",".spinnerplus",function() {
+        var cur = parseInt($(this).siblings("input").val());
+        cur++;
+        $(this).siblings("input").val(cur);
+      });
 
-			$(document).on("click","#btn_savesettings",function() {
-				$("#frmsettings").ajaxSubmit(function(back) {
-					myApp.alert(back, 'Info');
+      $(document).on("click","#btn_savesettings",function() {
+        $("#frmsettings").ajaxSubmit(function(back) {
+          myApp.alert(back, 'Info');
 
-				});
-				return false;
-			});
-			$$(".mark_dangerous").on("click",function() {
+        });
+        return false;
+      });
+      $$(".mark_dangerous").on("click",function() {
         // Ask reason and send straight.
         myApp.prompt('What makes the problem dangerous?','Send feedback', function (value) {
           var url = window.api.apicallbase + "savefeedback/?msgtype=dangerous";
@@ -460,62 +463,62 @@ var addSingleGroupPageListeners = function(pagename,url) {
       var clickedLink = this;
       var popoverHTML = '<div class="popover groupmenu-popup">'+
         '<div class="popover-inner">'+
-          '<div class="list-block">'+
-            '<ul>';
-            popoverHTML += '<li><a href="/list_group_members.html?group='+gid+'" class="item-link list-button  close-popover" >Show members</a></li>';
-            if (isadmin) {
-              popoverHTML += '<li><a href="#" class="item-link list-button  open-groupsettings close-popover" >Edit group</a></li>';
-            }
-            if (iscreator) {
-              popoverHTML += '<li><a href="#" class="item-link list-button  delete_group close-popover" data-gid="'+gid+'">Delete group</a></li>';
-            }
+        '<div class="list-block">'+
+        '<ul>';
+      popoverHTML += '<li><a href="/list_group_members.html?group='+gid+'" class="item-link list-button  close-popover" >Show members</a></li>';
+      if (isadmin) {
+        popoverHTML += '<li><a href="#" class="item-link list-button  open-groupsettings close-popover" >Edit group</a></li>';
+      }
+      if (iscreator) {
+        popoverHTML += '<li><a href="#" class="item-link list-button  delete_group close-popover" data-gid="'+gid+'">Delete group</a></li>';
+      }
 
-            if (isme) {
-              popoverHTML += '<li><a href="#" class="item-link list-button leave_group close-popover"  data-gid="'+gid+'">Leave group</a></li>';
-            } else {
-              popoverHTML += '<li><a href="#" class="item-link list-button join_group close-popover" data-gid="'+gid+'">Join group</a></li>';
-            }
-            popoverHTML += '<li><a href="#" class="item-link list-button close-popover">Close menu</a></li>'+
-              '</ul>'+
-                '</div>'+
-                  '</div>'+
-                    '</div>'
-                    myApp.popover(popoverHTML, clickedLink);
-                    var addGroupMenuPopoverListeners = function() {
-                      addGroupLeaveJoinListeners();
-                      $$(".delete_group").on("click",function() {
-                        var gid = $(this).data("gid");
-                        myApp.confirm("ALL the members, rankings etc. will be deleted.<br /><br />This action cannot be undone.","Are you sure?",function(back) {
-                          var url = window.api.apicallbase +"delete_group";
-                          $$.post(url,{gid : gid},function(back) {
-                            myApp.alert(back,"Message",function() {
-                              mainView.router.back();
-                            });
-                            mainView.router.refreshPreviousPage();
-                          });
-                        },function() {
+      if (isme) {
+        popoverHTML += '<li><a href="#" class="item-link list-button leave_group close-popover"  data-gid="'+gid+'">Leave group</a></li>';
+      } else {
+        popoverHTML += '<li><a href="#" class="item-link list-button join_group close-popover" data-gid="'+gid+'">Join group</a></li>';
+      }
+      popoverHTML += '<li><a href="#" class="item-link list-button close-popover">Close menu</a></li>'+
+        '</ul>'+
+        '</div>'+
+        '</div>'+
+        '</div>'
+      myApp.popover(popoverHTML, clickedLink);
+      var addGroupMenuPopoverListeners = function() {
+        addGroupLeaveJoinListeners();
+        $$(".delete_group").on("click",function() {
+          var gid = $(this).data("gid");
+          myApp.confirm("ALL the members, rankings etc. will be deleted.<br /><br />This action cannot be undone.","Are you sure?",function(back) {
+            var url = window.api.apicallbase +"delete_group";
+            $$.post(url,{gid : gid},function(back) {
+              myApp.alert(back,"Message",function() {
+                mainView.router.back();
+              });
+              mainView.router.refreshPreviousPage();
+            });
+          },function() {
 
-                        });
-                      });
-                      $$(".open-groupsettings").on("click",function() {
-                        // Populate settings first
-                        var desc = $(".groupdesc").text();
-                        var name = $(".groupname").text();
-                        var public = $(".public").data("public") == "1";
-                        var groupid = $(".public").data("groupid");
+          });
+        });
+        $$(".open-groupsettings").on("click",function() {
+          // Populate settings first
+          var desc = $(".groupdesc").text();
+          var name = $(".groupname").text();
+          var public = $(".public").data("public") == "1";
+          var groupid = $(".public").data("groupid");
 
-                        $(".popup-groupsettings").find(".fld_name").val(name);
-                        $(".popup-groupsettings").find(".fld_groupdesc").val(desc);
-                        $(".popup-groupsettings").find(".fld_public").prop("checked",public);
-                        $(".popup-groupsettings").find(".fld_groupid").val(groupid);
-                        myApp.popup('.popup-groupsettings');
+          $(".popup-groupsettings").find(".fld_name").val(name);
+          $(".popup-groupsettings").find(".fld_groupdesc").val(desc);
+          $(".popup-groupsettings").find(".fld_public").prop("checked",public);
+          $(".popup-groupsettings").find(".fld_groupid").val(groupid);
+          myApp.popup('.popup-groupsettings');
 
-                      });
+        });
 
-                    };
-                    $$(".groupmenu-popup").on("opened",function() {
-                      addGroupMenuPopoverListeners();
-                    });
+      };
+      $$(".groupmenu-popup").on("opened",function() {
+        addGroupMenuPopoverListeners();
+      });
     });
 
 

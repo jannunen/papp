@@ -211,7 +211,7 @@ var addGroupPageListeners = function(pagename) {
       $$(".load_single_group").on("click",function() {
 	var gid = $$(this).attr("data-group");
 	var url = window.api.apicallbase + "group/"+gid;
-	$$.getJSON(url, function (data){
+	$$.jsonp(url, function (data){
 	  var tpl = $("script#template_single_group").html();
 	  var ctpl = Template7.compile(tpl);
 	  var html = ctpl({group : data});
@@ -221,7 +221,7 @@ var addGroupPageListeners = function(pagename) {
     });
   }
   var reloadPendingInvitations = function() {
-    $.getJSON(window.api.apicallbase+"mypendinginvitations", function(invitations) {
+    $.jsonp(window.api.apicallbase+"mypendinginvitations", function(invitations) {
       var tpl = $("script#template_mypendinginvitation_item").html();
       var ctpl = Template7.compile(tpl);
       var html = ctpl({invitations : invitations});
@@ -233,7 +233,7 @@ var addGroupPageListeners = function(pagename) {
     $$(".accept-invitation").on("click",function() {
       var invid = $$(this).data("invid");
       var url = window.api.apicallbase + "acceptinvitation";
-      $.post(url,{invid: invid}).done(function(back) {
+      $.jsonp(url,{invid: invid}).done(function(back) {
 	myApp.closeModal();
 	reloadPendingInvitations();
 	reloadMyGroups();
@@ -243,7 +243,7 @@ var addGroupPageListeners = function(pagename) {
     $$(".decline-invitation").on("click",function() {
       var invid = $$(this).data("invid");
       var url = window.api.apicallbase + "declineinvitation";
-      $.post(url,{invid: invid}).done(function(back) {
+      $.jsonp(url,{invid: invid}).done(function(back) {
 	myApp.closeModal();
 	reloadPendingInvitations();
       });
@@ -306,7 +306,7 @@ if ("grouplist"==pagename && !groupPageListenersInitialized) {
       $(".searching").html('<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>');
       // Do a search
       var url = window.api.apicallbase+"search_groups";
-      $.getJSON(url,{text : val},function(back) {
+      $.jsonp(url,{text : val},function(back) {
 	var tpl = $("script#search_groups_hit_item").html();
 	var ctpl = Template7.compile(tpl);
 	var html = ctpl({groups : back});    

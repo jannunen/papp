@@ -158,7 +158,7 @@ $$(document).on('pageInit', function (e) {
 		  // Go here only if the page is empty or it is dashboard...
 		  debugger;
 		  var uri = e.target.baseURI;
-		  if (uri == "" || uri.match(/dashboard/i)) {
+		  if (uri.match(/\d+\.\d+.\d+\.\d+.*?\//) || uri.match(/dashboard/i)) {
 		    indexController.initializeIndexPage();
 		  }
 		} else {

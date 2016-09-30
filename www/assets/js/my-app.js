@@ -23,6 +23,7 @@ var myApp = new Framework7({
 			}
 			return;
 		}
+debugger;
 		/* 
 		 * If a single group is being fetched, go ahead, find the group data 
 		 * via API, compile the template and since it is an AJAX call,
@@ -75,6 +76,18 @@ var myApp = new Framework7({
 				var compiledTemplate = Template7.compile(content);
 				var dataJSON = {group : data};
 				next(compiledTemplate(dataJSON));
+			});
+		} else if ((matches=url.match(/groups.html/))) {
+			// List group members
+			var url = window.api.apicallbase + "groups/";
+			$.jsonp(url, {}, function (data){
+				if (!Cookies.get("loginok")) {
+					return false;
+				}
+debugger;
+				var compiledTemplate = Template7.compile(content);
+				var html = compiledTemplate(data);
+				next(html);
 			});
 		} else if ((matches=url.match(/list_group_members.html.*?(\d+)/))) {
 			// List group members
@@ -142,7 +155,12 @@ $$(document).on('pageInit', function (e) {
 			var uid = Cookies.get("uid");
 			$("#userid").val(uid);
 			window.uid = uid;
-			indexController.initializeIndexPage();
+		  // Go here only if the page is empty or it is dashboard...
+		  debugger;
+		  var uri = e.target.baseURI;
+		  if (uri == "" || uri.match(/dashboard/i)) {
+		    indexController.initializeIndexPage();
+		  }
 		} else {
 			addLoginPageListeners();
 			myApp.loginScreen();
@@ -159,12 +177,13 @@ myApp.onPageInit("*",function(page) {
 		 addGroupMemberListeners(pagename);
 		 addInviteMemberPageListeners(pagename);
 		 addSingleGroupPageListeners(pagename,page.url);
-		 addGroupPageListeners(pagename);
 		 */
+  debugger;
 	if (!Cookies.get("loginok")) {
 		return false;
 	}
 	console.log("Initi: "+pagename);
+	addGroupPageListeners(pagename);
 	addSingleProblemListeners(pagename);
 	addProblemsPageListeners(pagename);
 	addDashBoardListeners(pagename);

@@ -23,21 +23,21 @@ var myApp = new Framework7({
 			}
 			return;
 		}
-debugger;
 		/* 
 		 * If a single group is being fetched, go ahead, find the group data 
 		 * via API, compile the template and since it is an AJAX call,
 		 * one has to call next() to advance in the processing 
 		 */
-		if ((matches=url.match(/problematormobile\/group\/(\d+)/i))) {
+debugger;
+		if ((matches=url.match(/group.html.*?(\d+)/i))) {
 			var groupid = matches[1];
 			var url = window.api.apicallbase + "group/";
-			$$.jsonp(url, {id : groupid}, function (data){ 
+			$.jsonp(url, {id : groupid}, function (data){ 
 				if (!Cookies.get("loginok")) {
 					return false;
 				}
 				var compiledTemplate = Template7.compile(content);
-				var dataJSON = {group : JSON.parse(data)};
+				var dataJSON = {group : data};
 				next(compiledTemplate(dataJSON));
 			});
 		} else if ((matches=url.match(/dashboard.html/))) {

@@ -84,12 +84,12 @@ debugger;
 				if (!Cookies.get("loginok")) {
 					return false;
 				}
-debugger;
 				var compiledTemplate = Template7.compile(content);
 				var html = compiledTemplate(data);
 				next(html);
 			});
 		} else if ((matches=url.match(/list_group_members.html.*?(\d+)/))) {
+debugger;
 			// List group members
 			var groupid = matches[1];
 			var url = window.api.apicallbase + "list_group_members/";
@@ -156,9 +156,8 @@ $$(document).on('pageInit', function (e) {
 			$("#userid").val(uid);
 			window.uid = uid;
 		  // Go here only if the page is empty or it is dashboard...
-		  debugger;
 		  var uri = e.target.baseURI;
-		  if (uri.match(/\d+\.\d+.\d+\.\d+.*?\//) || uri.match(/dashboard/i)) {
+		  if (uri.match(/\d+\.\d+.\d+\.\d+.*?\//) || uri.match(/localho.*\//) || uri.match(/dashboard/i)) {
 		    indexController.initializeIndexPage();
 		  }
 		} else {
@@ -170,23 +169,20 @@ $$(document).on('pageInit', function (e) {
 });
 myApp.init(); // init app manually after you've attached all handlers
 myApp.onPageInit("*",function(page) {
-	var pagename = page.name;
-	var matches = null;
+  var pagename = page.name;
+  var matches = null;
 
-	/*
-		 addGroupMemberListeners(pagename);
-		 addInviteMemberPageListeners(pagename);
-		 addSingleGroupPageListeners(pagename,page.url);
-		 */
-  debugger;
-	if (!Cookies.get("loginok")) {
-		return false;
-	}
-	console.log("Initi: "+pagename);
-	addGroupPageListeners(pagename);
-	addSingleProblemListeners(pagename);
-	addProblemsPageListeners(pagename);
-	addDashBoardListeners(pagename);
+  if (!Cookies.get("loginok")) {
+    return false;
+  }
+  console.log("Initi: "+pagename);
+  addGroupMemberListeners(pagename);
+  addInviteMemberPageListeners(pagename);
+  addSingleGroupPageListeners(pagename,page.url);
+  addGroupPageListeners(pagename);
+  addSingleProblemListeners(pagename);
+  addProblemsPageListeners(pagename);
+  addDashBoardListeners(pagename);
 
 });
 

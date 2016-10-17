@@ -344,9 +344,17 @@ var addGroupMemberListeners = function(pagename) {
 	return;
       }
       if (val != "") {
-	$(this).parents(".single_group").find(".groupmembers div.username:not(:contains('"+val+"'))").parents("li").slideUp();
+	$(this).parents(".single_group").find(".groupmembers div.username").each(function() {
+	  var pattern = new RegExp(val, 'gi');
+	  if ($(this).text().match(pattern)) {
+	    $(this).parents("li").show();
+	  } else {
+	    $(this).parents("li").slideUp();
+	  }
+	});
       } else {
 	$(this).parents(".single_group").find(".groupmembers li").show();
+
       }
     });
     groupMemberPageListenersInitialized = true;
@@ -551,6 +559,9 @@ var addSingleProblemListeners = function(pagename) {
 }
 var addSingleGroupPageListeners = function(pagename,url) {
   if ("singlegroup"==pagename && !singleGroupPageListenersInitialized) { 
+    // Preloader might be visible when using the app after a longer time
+    myApp.hidePreloader();
+
     $$(".groupmenu-open").on("click",function() {
       var isme = $(this).data("me") != "";
       var gid = $(this).data("gid");
@@ -662,51 +673,52 @@ var addGroupLeaveJoinListeners = function() {
 }
 var addInviteMemberPageListeners = function(pagename) {
   if ("invite_group_member"==pagename && !inviteMemberPageListenersInitialized) { 
+    debugger;
     // What to do when plus is clicked and email is added to the list
     $$(".add_invite_email").on('click',function() {
       // Validate email and add to emails list.
       var email =  $(this).parent(".item-after").siblings(".item-input").find("input.invite_email").val(); 
       if (email == undefined || !email.match(/^[^@]+@[^@]+\.[^@]+$/)) {
-        myApp.alert("Not a valid email.","Error");
+	myApp.alert("Not a valid email.","Error");
       } else {
-        // Make sure that the placeholder is gone
-        $(".no_emails_yet").remove();
+	// Make sure that the placeholder is gone
+	$(".no_emails_yet").remove();
 
-        // Append to list
-        var html =$( $("script#single_invited_email").html());
-        $(html).find(".item-title").text(email);
-        $(".invited_emails_list").append(html.html());
+	// Append to list
+	var html =$( $("script#single_invited_email").html());
+	$(html).find(".item-title").text(email);
+	$(".invited_emails_list").append(html.html());
 
-        // And empty the input field.
-        $(this).parent(".item-after").siblings(".item-input").find("input.invite_email").val(""); 
+	// And empty the input field.
+	$(this).parent(".item-after").siblings(".item-input").find("input.invite_email").val(""); 
 
-        // Listener for removing an email from list
-        //
-        $$(".remove_invite_email").on("click",function() {
-          $(this).parents("li").remove();
-        });
+	// Listener for removing an email from list
+	//
+	$$(".remove_invite_email").on("click",function() {
+	  $(this).parents("li").remove();
+	});
       }
     });
 
     $$(".send_invitations").on("click",function() {
       var emails = $(".invited_email").length;
       if (emails == 0) {
-        myApp.alert("Add email(s) to invite first.","Notification");
-        return;
+	myApp.alert("Add email(s) to invite first.","Notification");
+	return;
       } else {
-        emails = $(".invited_email").map(function() {
-          return $(this).find(".item-title").text().trim();
-        }).get().join(",");
-        var url = window.api.apicallbase + "send_invitations";
-        var msg = $(".invite_msg").val();
-        var add_admin = $(".add_admin_rights").is(":checked") ? "1" : "0";
-        var groupid = $("#groupid").val();
-        $.post(url,{groupid: groupid, emails : emails,msg : msg, add_admin : add_admin}).done(function(back) {
-          var dataJSON =  JSON.parse(back);
-          myApp.alert(dataJSON.msg,"Message");
-          // Go back 
-          mainView.router.back();
-        });
+	emails = $(".invited_email").map(function() {
+	  return $(this).find(".item-title").text().trim();
+	}).get().join(",");
+	var url = window.api.apicallbase + "send_invitations";
+	var msg = $(".invite_msg").val();
+	var add_admin = $(".add_admin_rights").is(":checked") ? "1" : "0";
+	var groupid = $("#groupid").val();
+	$.post(url,{groupid: groupid, emails : emails,msg : msg, add_admin : add_admin}).done(function(back) {
+	  var dataJSON =  JSON.parse(back);
+	  myApp.alert(dataJSON.msg,"Message");
+	  // Go back 
+	  mainView.router.back();
+	});
       }
     });
     inviteMemberPageListenersInitialized = true;

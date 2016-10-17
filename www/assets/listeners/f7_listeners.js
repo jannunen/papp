@@ -713,12 +713,14 @@ var addInviteMemberPageListeners = function(pagename) {
 	var msg = $(".invite_msg").val();
 	var add_admin = $(".add_admin_rights").is(":checked") ? "1" : "0";
 	var groupid = $("#groupid").val();
-	$.post(url,{groupid: groupid, emails : emails,msg : msg, add_admin : add_admin}).done(function(back) {
-	  var dataJSON =  JSON.parse(back);
+        debugger;
+	$.jsonp(url,{groupid: groupid, emails : emails,msg : msg, add_admin : add_admin},function(dataJSON) {
 	  myApp.alert(dataJSON.msg,"Message");
 	  // Go back 
-	  mainView.router.back();
-	});
+          if (!dataJSON.msg.match(/error/i)) {
+            mainView.router.back({ignoreCache : true});
+          }
+        },{method : 'POST'});
       }
     });
     inviteMemberPageListenersInitialized = true;

@@ -70,6 +70,7 @@ debugger;
 			var groupid = matches[1];
 			var url = window.api.apicallbase + "group/";
 			$.jsonp(url, {id : groupid}, function (data){ 
+				loginCheck(data);
 				if (!Cookies.get("loginok")) {
 					return false;
 				}
